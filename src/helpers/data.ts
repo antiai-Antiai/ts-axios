@@ -4,3 +4,15 @@ export function transformRequest(data: any): any {
     return JSON.stringify(data)
   }
 }
+
+export function transformReponse(data: any): any {
+  if (typeof data === 'string') {
+    try {
+      return JSON.parse(data)
+    } catch (error) {
+      // do nothing
+    }
+  } else {
+    return data
+  }
+}
