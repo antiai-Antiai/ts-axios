@@ -19,6 +19,7 @@ module.exports = {
     if (fs.statSync(fullDir).isDirectory() && fs.existsSync(entry)) {
       entries[dir] = ['webpack-hot-middleware/client', entry]
     }
+    console.log(entries)
 
     return entries
   }, {}),
@@ -61,8 +62,5 @@ module.exports = {
     extensions: ['.ts', '.tsx', '.js']
   },
 
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin()
-  ]
+  plugins: [new webpack.HotModuleReplacementPlugin(), new webpack.NoEmitOnErrorsPlugin()]
 }

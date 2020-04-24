@@ -1,5 +1,6 @@
-import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from './types'
-import { parseHeaders } from './helpers/header'
+import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types'
+import { parseHeaders } from '../helpers/header'
+import { createError } from '../helpers/error'
 
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
@@ -15,7 +16,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       request.timeout = timeout
     }
     /**发送请求 */
-    request.open(method.toUpperCase(), url, true)
+    request.open(method.toUpperCase(), url!, true)
     /**处理相应后的数据 */
     request.onreadystatechange = function handleLoad() {
       if (request.readyState !== 4) {
@@ -38,11 +39,11 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     }
     /**网络错误处理 */
     request.onerror = function() {
-      reject(new Error('Network Error!'))
+      reject(createError('Network Error!', config, null, request))
     }
     /**处理请求错误 */
     request.ontimeout = function() {
-      reject(new Error(`Timeout of ${timeout} ms exceeded`))
+      reject(createError(`Timeout of ${timeout} ms exceeded`, config, null, request))
     }
     /**处理网络请求头 */
     Object.keys(headers).forEach(name => {
@@ -59,7 +60,15 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       if (response.status >= 200 && response.status < 300) {
         resolve(response)
       } else {
-        reject(`Request failed with status code ${response.status}`)
+        reject(
+          createError(
+            `Request failed with status code ${response.status}`,
+            config,
+            null,
+            request,
+            response
+          )
+        )
       }
     }
   })
