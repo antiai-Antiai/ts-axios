@@ -3,7 +3,7 @@ import { buildURL } from '../helpers/url'
 import { transformRequest, transformReponse } from '../helpers/data'
 import { processHeaders } from '../helpers/header'
 import xhr from './xhr'
-function axios(config: AxiosRequestConfig): AxiosPromise {
+function dispatch(config: AxiosRequestConfig): AxiosPromise {
   processConfig(config)
   return xhr(config).then(res => {
     return transformResponseData(res)
@@ -34,4 +34,4 @@ function transformResponseData(res: AxiosResponse): AxiosResponse {
   res.data = transformReponse(res.data)
   return res
 }
-export default axios
+export default dispatch
