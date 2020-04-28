@@ -8,6 +8,5 @@ function createInstance(): AxiosInstance {
   extend(instance, context)
   return instance as AxiosInstance
 }
-
 const axios = createInstance()
 export default axios
