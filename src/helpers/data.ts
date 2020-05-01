@@ -3,9 +3,10 @@ export function transformRequest(data: any): any {
   if (isPlainObject(data)) {
     return JSON.stringify(data)
   }
+  return data
 }
 
-export function transformReponse(data: any): any {
+export function transformResponse(data: any): any {
   if (typeof data === 'string') {
     try {
       return JSON.parse(data)
