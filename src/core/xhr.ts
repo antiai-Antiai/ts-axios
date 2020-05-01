@@ -1,10 +1,22 @@
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types'
 import { parseHeaders } from '../helpers/header'
 import { createError } from '../helpers/error'
+import { isURLSameOrigin } from '../helpers/url'
+import cookie from '../helpers/cookie'
 
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
-    const { data, url, method = 'get', headers, responseType, timeout, withCredentials } = config
+    const {
+      data,
+      url,
+      method = 'get',
+      headers,
+      responseType,
+      timeout,
+      withCredentials,
+      xsrfCookieName,
+      xsrfHeaderName
+    } = config
     // 创建XHR请求对象的实例
     const request = new XMLHttpRequest()
     /**如果存在responseType */
@@ -40,6 +52,13 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     /**是否携带cookie */
     if (withCredentials) {
       request.withCredentials = withCredentials
+    }
+    /**防止xsrf攻击 */
+    if ((withCredentials || isURLSameOrigin(url!)) && xsrfCookieName) {
+      const xsrfValue = cookie.read(xsrfCookieName)
+      if (xsrfValue) {
+        headers[xsrfHeaderName!] = xsrfValue
+      }
     }
     /**网络错误处理 */
     request.onerror = function() {
