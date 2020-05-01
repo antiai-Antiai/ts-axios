@@ -25,6 +25,7 @@ export interface AxiosRequestConfig {
   [propName: string]: any
   transformRequest?: AxiosTransformer | AxiosTransformer[]
   transformResponse?: AxiosTransformer | AxiosTransformer[]
+  withCredentials?: boolean
 }
 
 /**实现axios Promise化 */

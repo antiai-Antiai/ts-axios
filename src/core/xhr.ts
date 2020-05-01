@@ -4,7 +4,7 @@ import { createError } from '../helpers/error'
 
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
-    const { data, url, method = 'get', headers, responseType, timeout } = config
+    const { data, url, method = 'get', headers, responseType, timeout, withCredentials } = config
     // 创建XHR请求对象的实例
     const request = new XMLHttpRequest()
     /**如果存在responseType */
@@ -36,6 +36,10 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         request
       }
       handleResponse(response)
+    }
+    /**是否携带cookie */
+    if (withCredentials) {
+      request.withCredentials = withCredentials
     }
     /**网络错误处理 */
     request.onerror = function() {
