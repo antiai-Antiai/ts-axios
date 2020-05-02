@@ -22,7 +22,6 @@ export interface AxiosRequestConfig {
   headers?: any
   responseType?: XMLHttpRequestResponseType
   timeout?: number
-  [propName: string]: any
   transformRequest?: AxiosTransformer | AxiosTransformer[]
   transformResponse?: AxiosTransformer | AxiosTransformer[]
   withCredentials?: boolean
@@ -30,6 +29,9 @@ export interface AxiosRequestConfig {
   xsrfHeaderName?: string
   onDownloadProgress?: (e: ProgressEvent) => void
   onUploadProgress?: (e: ProgressEvent) => void
+  auth?: AxiosBasicCredentials
+
+  [propName: string]: any
 }
 
 /**实现axios Promise化 */
@@ -99,4 +101,9 @@ export interface AxiosTransformer {
 /**axios create静态方法 */
 export interface AxiosStatic extends AxiosInstance {
   create(config?: AxiosRequestConfig): AxiosInstance
+}
+
+export interface AxiosBasicCredentials {
+  username: string
+  password: string
 }

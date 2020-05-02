@@ -2,7 +2,7 @@ import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types'
 import { parseHeaders } from '../helpers/header'
 import { createError } from '../helpers/error'
 import { isURLSameOrigin } from '../helpers/url'
-import { formData } from '../helpers/util'
+import { isFormData } from '../helpers/util'
 import cookie from '../helpers/cookie'
 
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
@@ -18,7 +18,8 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       xsrfCookieName,
       xsrfHeaderName,
       onDownloadProgress,
-      onUploadProgress
+      onUploadProgress,
+      auth
     } = config
     // 创建XHR请求对象的实例
     const request = new XMLHttpRequest()
@@ -104,7 +105,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     /** 请求头相关的处理 */
     function processHeaders(): void {
       /** 如果是formData上传方式，应该删除headers[Content-type],让浏览器自己判断 */
-      if (formData) {
+      if (isFormData(data)) {
         delete headers['Content-type']
       }
       /**防止xsrf攻击 */
@@ -117,6 +118,10 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       /**是否携带cookie */
       if (withCredentials) {
         request.withCredentials = withCredentials
+      }
+      /** baseAuth */
+      if (auth) {
+        headers['Authorization'] = 'Basic ' + btoa(auth.username + ':' + auth.password)
       }
       /**处理网络请求头 */
       Object.keys(headers).forEach(name => {
