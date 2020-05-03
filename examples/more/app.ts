@@ -123,7 +123,7 @@ axios
   .then(res => {
     console.log(res)
   })
-*/
+
 const instance1 = axios.create({
   paramsSerializer(params) {
     return qs.stringify(params, { arrayFormat: 'brackets' })
@@ -141,3 +141,11 @@ instance1
   .then(res => {
     console.log(res)
   })
+*/
+// https://img3.mukewang.com/szimg/5e98339809ac343012000676-360-202.png
+const instance2 = axios.create({
+  baseURL: 'https://img3.mukewang.com'
+})
+
+instance2.get('/szimg/5e98339809ac343012000676-360-202.png')
+instance2.get('https://img3.mukewang.com/szimg/5e98339809ac343012000676-360-202.png')
