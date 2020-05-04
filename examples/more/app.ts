@@ -4,6 +4,7 @@ import NProgress from 'nprogress'
 import qs from 'qs'
 import { AxiosError } from '../../src/helpers/error'
 
+/*
 const instance = axios.create()
 
 function calculatePercentage(loaded: number, total: number) {
@@ -61,6 +62,7 @@ uploadEl.addEventListener('click', e => {
     instance.post('/more/upload', data)
   }
 })
+*/
 /*
 axios
   .post(
@@ -143,9 +145,41 @@ instance1
   })
 */
 // https://img3.mukewang.com/szimg/5e98339809ac343012000676-360-202.png
-const instance2 = axios.create({
-  baseURL: 'https://img3.mukewang.com'
+// const instance2 = axios.create({
+//   baseURL: 'https://img3.mukewang.com'
+// })
+
+// instance2.get('/szimg/5e98339809ac343012000676-360-202.png')
+// instance2.get('https://img3.mukewang.com/szimg/5e98339809ac343012000676-360-202.png')
+
+function getA() {
+  return axios.get('/more/A')
+}
+
+function getB() {
+  return axios.get('/more/B')
+}
+
+// axios.all([getA(), getB()]).then(
+//   axios.spread(function(resA, resB) {
+//     console.log(resA)
+//     console.log(resB)
+//   })
+// )
+
+axios.all([getA(), getB()]).then(([resA, resB]) => {
+  console.log(resA)
+  console.log(resB)
 })
 
-instance2.get('/szimg/5e98339809ac343012000676-360-202.png')
-instance2.get('https://img3.mukewang.com/szimg/5e98339809ac343012000676-360-202.png')
+const fakeConfig = {
+  baseURL: 'https//www.baidu.com',
+  url: '/user/12345',
+  params: {
+    idClient: 1,
+    idTest: 2,
+    testString: 'thisIsATest'
+  }
+}
+
+console.log(axios.getUri(fakeConfig))

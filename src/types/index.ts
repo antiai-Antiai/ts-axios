@@ -69,6 +69,7 @@ export interface Axios {
   post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
   put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
   patch<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
+  getUri(config: AxiosRequestConfig): string
 }
 /**
  * axios 混合类型
@@ -103,9 +104,17 @@ export interface AxiosTransformer {
 /**axios create静态方法 */
 export interface AxiosStatic extends AxiosInstance {
   create(config?: AxiosRequestConfig): AxiosInstance
+
+  all<T>(promises: Array<T | Promise<T>>): Promise<T[]>
+  spread<T, R>(callback: (...args: T[]) => R): (arr: T[]) => R
+  Axios: any
 }
 
 export interface AxiosBasicCredentials {
   username: string
   password: string
+}
+
+export interface AxiosClassStatic {
+  new (config: AxiosRequestConfig): Axios
 }

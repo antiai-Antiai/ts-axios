@@ -70,6 +70,5 @@ export function isAbsoluteURL(url: string): boolean {
 }
 
 export function combineURL(baseURL: string, relativeURL?: string): string {
-  console.log(baseURL, relativeURL)
   return relativeURL ? baseURL.replace(/\/*$/, '') + '/' + relativeURL.replace(/^\/+/, '') : baseURL
 }
